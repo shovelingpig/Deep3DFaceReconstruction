@@ -1,6 +1,6 @@
 import numpy as np 
-import tensorflow as tf
-from PIL import Image
+# import tensorflow as tf
+# from PIL import Image
 from scipy.io import loadmat,savemat
 from array import array
 
@@ -135,3 +135,19 @@ def load_graph(graph_filename):
 		graph_def.ParseFromString(f.read())
 
 	return graph_def
+
+
+if __name__ == '__main__':
+	expPC, expEV = LoadExpBasis()
+
+	exBase = expPC*np.reshape(expEV,[-1,79])
+	#exBase = exBase/1e5 # unify the scale to decimeter
+	exBase = exBase[:,:76] # use only first 64 basis
+
+	exBase = np.reshape(exBase,[-1,3,76])
+	print(exBase.shape)
+	exBase = np.reshape(exBase,[-1,76])
+	print(exBase.shape)
+
+	np.save('ExpressionBasis_x_1e5', exBase)
+	
